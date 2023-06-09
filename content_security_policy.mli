@@ -1,13 +1,5 @@
 open! Core
 
-module Hash_algorithm : sig
-  type t =
-    | Sha256
-    | Sha384
-    | Sha512
-  [@@deriving compare, sexp_of]
-end
-
 module Source : sig
   type t =
     | Self
@@ -15,11 +7,7 @@ module Source : sig
     | Unsafe_eval
     | Strict_dynamic
     | Report_sample
-    | Nonce of string
-    | Hash of
-        { algorithm : Hash_algorithm.t
-        ; value : string
-        }
+    | Inline_content of string
     | Host_or_scheme of string
   [@@deriving compare, sexp_of]
 end

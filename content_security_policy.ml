@@ -1,19 +1,5 @@
 open! Core
 
-module Hash_algorithm = struct
-  type t =
-    | Sha256
-    | Sha384
-    | Sha512
-  [@@deriving compare, sexp_of]
-
-  let to_string = function
-    | Sha256 -> "sha256"
-    | Sha384 -> "sha384"
-    | Sha512 -> "sha512"
-  ;;
-end
-
 module Source = struct
   type t =
     | Self
@@ -21,11 +7,7 @@ module Source = struct
     | Unsafe_eval
     | Strict_dynamic
     | Report_sample
-    | Nonce of string
-    | Hash of
-        { algorithm : Hash_algorithm.t
-        ; value : string
-        }
+    | Inline_content of string
     | Host_or_scheme of string
   [@@deriving compare, sexp_of]
 
@@ -35,9 +17,11 @@ module Source = struct
     | Unsafe_eval -> "'unsafe-eval'"
     | Strict_dynamic -> "'strict-dynamic'"
     | Report_sample -> "'report-sample'"
-    | Nonce nonce -> "nonce-" ^ nonce
-    | Hash { algorithm; value } ->
-      "'" ^ Hash_algorithm.to_string algorithm ^ "-" ^ value ^ "'"
+    | Inline_content content ->
+      let hash =
+        Base64.encode_string (Cryptokit.hash_string (Cryptokit.Hash.sha256 ()) content)
+      in
+      [%string "'sha256-%{hash}'"]
     | Host_or_scheme s -> s
   ;;
 

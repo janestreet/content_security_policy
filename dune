@@ -1,2 +1,2 @@
 (library (name content_security_policy) (public_name content_security_policy)
- (libraries core) (preprocess (pps ppx_jane)))
+ (libraries core base64 cryptokit) (preprocess (pps ppx_jane)))
