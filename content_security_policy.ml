@@ -77,15 +77,15 @@ type t =
 [@@deriving sexp_of]
 
 let create
-      ?report_uri
-      ?base_uri
-      ?form_action
-      ?frame_ancestors
-      ?(plugin_types = [])
-      ?require_sri_for_script
-      ?require_sri_for_style
-      ~insecure_requests
-      fetch_directives
+  ?report_uri
+  ?base_uri
+  ?form_action
+  ?frame_ancestors
+  ?(plugin_types = [])
+  ?require_sri_for_script
+  ?require_sri_for_style
+  ~insecure_requests
+  fetch_directives
   =
   { report_uri
   ; fetch_directives =
@@ -137,16 +137,16 @@ let plugin_types_to_string plugin_types =
 ;;
 
 let to_string
-      { report_uri
-      ; fetch_directives
-      ; base_uri
-      ; form_action
-      ; frame_ancestors
-      ; plugin_types
-      ; insecure_requests
-      ; require_sri_for_script
-      ; require_sri_for_style
-      }
+  { report_uri
+  ; fetch_directives
+  ; base_uri
+  ; form_action
+  ; frame_ancestors
+  ; plugin_types
+  ; insecure_requests
+  ; require_sri_for_script
+  ; require_sri_for_style
+  }
   =
   [ Option.map report_uri ~f:(fun uri -> "report-uri " ^ uri) |> Option.to_list
   ; sources_based_directive_to_string' "base-uri" base_uri |> Option.to_list
