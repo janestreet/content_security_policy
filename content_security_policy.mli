@@ -48,8 +48,6 @@ type t [@@deriving sexp_of]
         ~base_uri:[]
         ~form_action:[]
         ~frame_ancestors:[]
-        ~require_sri_for_script:()
-        ~require_sri_for_style:()
         ~insecure_requests:`Block
         [Default, [None]]
     ]}
@@ -61,9 +59,6 @@ val create
   -> ?base_uri:Source.t list
   -> ?form_action:Source.t list
   -> ?frame_ancestors:Source.t list
-  -> ?plugin_types:string list
-  -> ?require_sri_for_script:unit
-  -> ?require_sri_for_style:unit
   -> insecure_requests:[ `Block | `Upgrade | `Allow ]
   -> (Fetch_type.t, Source.t list) List.Assoc.t
   -> t
