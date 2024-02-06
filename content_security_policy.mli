@@ -29,6 +29,7 @@ module Fetch_type : sig
   [@@deriving compare, sexp_of]
 end
 
+(** The type representing a security policy *)
 type t [@@deriving sexp_of]
 
 (** Create a Content Security Policy, which can be enforced by using it as a response
@@ -66,3 +67,37 @@ val create
 val to_string : t -> string
 val header_name : string
 val header_name_report_only : string
+
+module Monoid : sig
+  (** The [empty] policy.  This policy is equivalent to the following:
+
+      base-uri 'self';
+      form-action 'self';
+      frame-ancestors 'self';
+      block-all-mixed-content;
+      default-src 'self';
+  *)
+  val empty : t
+
+  (** [combine] merges the two policies, producing a policy that accepts the set of requests
+      that is the union of both inputs. *)
+  val combine : t -> t -> t
+
+  (** An operator alias for [combine]. *)
+  val ( |.| ) : t -> t -> t
+
+  (** [reduce] merges all the items in the list *)
+  val reduce : t list -> t
+
+  (** returns a Csp.t for use in our various web-server libraries. *)
+  val finalize : t -> t
+
+  (** Constructors *)
+
+  val report_uri : string -> t
+  val base_uri : string -> t
+  val form_action : string -> t
+  val frame_ancestor : string -> t
+  val insecure_requests : [ `Allow | `Block | `Upgrade ] -> t
+  val fetch : Fetch_type.t -> Source.t -> t
+end
