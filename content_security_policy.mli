@@ -5,6 +5,7 @@ module Source : sig
     | Self
     | Unsafe_inline
     | Unsafe_eval
+    | Wasm_unsafe_eval
     | Strict_dynamic
     | Report_sample
     | Inline_content of string

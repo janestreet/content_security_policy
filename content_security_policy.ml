@@ -6,6 +6,7 @@ module Source = struct
       | Self
       | Unsafe_inline
       | Unsafe_eval
+      | Wasm_unsafe_eval
       | Strict_dynamic
       | Report_sample
       | Inline_content of string
@@ -20,6 +21,7 @@ module Source = struct
     | Self -> "'self'"
     | Unsafe_inline -> "'unsafe-inline'"
     | Unsafe_eval -> "'unsafe-eval'"
+    | Wasm_unsafe_eval -> "'wasm-unsafe-eval'"
     | Strict_dynamic -> "'strict-dynamic'"
     | Report_sample -> "'report-sample'"
     | Inline_content content ->
@@ -161,7 +163,7 @@ module Monoid = struct
   let merge_optional_sets a b =
     match a, b with
     | None, None -> None
-    | Some only, None | None, Some only -> Some only
+    | Some _, None | None, Some _ -> None
     | Some a, Some b -> Some (Set.union a b)
   ;;
 
