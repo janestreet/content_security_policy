@@ -10,7 +10,7 @@ module Source : sig
     | Report_sample
     | Inline_content of string
     | Host_or_scheme of string
-  [@@deriving compare, sexp_of]
+  [@@deriving compare ~localize, sexp_of]
 end
 
 module Fetch_type : sig
@@ -27,7 +27,7 @@ module Fetch_type : sig
     | Script
     | Style
     | Worker
-  [@@deriving compare, sexp_of]
+  [@@deriving compare ~localize, sexp_of]
 end
 
 (** The type representing a security policy *)

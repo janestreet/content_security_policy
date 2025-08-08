@@ -11,7 +11,7 @@ module Source = struct
       | Report_sample
       | Inline_content of string
       | Host_or_scheme of string
-    [@@deriving compare, sexp]
+    [@@deriving compare ~localize, sexp]
   end
 
   include T
@@ -58,7 +58,7 @@ module Fetch_type = struct
       | Script
       | Style
       | Worker
-    [@@deriving compare, sexp]
+    [@@deriving compare ~localize, sexp]
   end
 
   include T
