@@ -10,7 +10,7 @@ module Source : sig
     | Report_sample
     | Inline_content of string
     | Host_or_scheme of string
-  [@@deriving compare, sexp_of]
+  [@@deriving compare ~localize, sexp_of]
 end
 
 module Fetch_type : sig
@@ -27,7 +27,7 @@ module Fetch_type : sig
     | Script
     | Style
     | Worker
-  [@@deriving compare, sexp_of]
+  [@@deriving compare ~localize, sexp_of]
 end
 
 (** The type representing a security policy *)
@@ -51,7 +51,7 @@ type t [@@deriving sexp_of]
         ~form_action:[]
         ~frame_ancestors:[]
         ~insecure_requests:`Block
-        [Default, [None]]
+        [ Default, [ None ] ]
     ]}
 
     The [sandbox] directive isn't exposed because we don't understand how to use it
@@ -70,18 +70,19 @@ val header_name : string
 val header_name_report_only : string
 
 module Monoid : sig
-  (** The [empty] policy.  This policy is equivalent to the following:
+  (** {v
+ The [empty] policy.  This policy is equivalent to the following:
 
       base-uri 'self';
       form-action 'self';
       frame-ancestors 'self';
       block-all-mixed-content;
       default-src 'self';
-  *)
+      v} *)
   val empty : t
 
-  (** [combine] merges the two policies, producing a policy that accepts the set of requests
-      that is the union of both inputs. *)
+  (** [combine] merges the two policies, producing a policy that accepts the set of
+      requests that is the union of both inputs. *)
   val combine : t -> t -> t
 
   (** An operator alias for [combine]. *)
